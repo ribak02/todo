@@ -5,7 +5,6 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  LayoutAnimation,
   Platform,
   UIManager,
 } from 'react-native';
@@ -28,42 +27,37 @@ export function TaskItem({ task, onToggle, onUpdate }: Props) {
   const [descExpanded, setDescExpanded] = useState(false);
   const [descValue, setDescValue] = useState(task.description);
 
-  const toggleDesc = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setDescExpanded(v => !v);
-  };
-
   const handleDescBlur = () => {
-    if (!descValue.trim()) {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-      setDescExpanded(false);
-    }
+    if (!descValue.trim()) setDescExpanded(false);
     onUpdate(task.id, { description: descValue });
   };
 
   return (
     <View
       style={[
-        styles.container,
-        { borderBottomColor: colors.divider },
+        styles.card,
+        {
+          backgroundColor: colors.cardBg,
+          shadowColor: '#000',
+        },
       ]}>
       <View style={styles.row}>
+        {/* Checkbox */}
         <TouchableOpacity
           onPress={() => onToggle(task.id)}
           style={[
             styles.checkbox,
             {
-              borderColor: task.completed ? colors.checkboxFill : colors.secondaryText,
-              backgroundColor: task.completed ? colors.checkboxFill : 'transparent',
+              borderColor: task.completed ? colors.accent : colors.divider,
+              backgroundColor: task.completed ? colors.accent : 'transparent',
             },
           ]}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
-          {task.completed && (
-            <Text style={styles.checkmark}>✓</Text>
-          )}
+          {task.completed && <Text style={styles.checkmark}>✓</Text>}
         </TouchableOpacity>
 
-        <View style={styles.titleContainer}>
+        {/* Title + note toggle */}
+        <View style={styles.body}>
           <TextInput
             style={[
               styles.title,
@@ -79,13 +73,15 @@ export function TaskItem({ task, onToggle, onUpdate }: Props) {
             returnKeyType="done"
             blurOnSubmit
           />
-          <TouchableOpacity onPress={toggleDesc} hitSlop={{ top: 4, bottom: 4, left: 4, right: 4 }}>
-            <Text style={[styles.descToggle, { color: colors.secondaryText }]}>
+          <TouchableOpacity
+            onPress={() => setDescExpanded(v => !v)}
+            hitSlop={{ top: 4, bottom: 4, left: 4, right: 4 }}>
+            <Text style={[styles.noteToggle, { color: colors.secondaryText }]}>
               {descExpanded
-                ? '▲ Hide note'
+                ? '↑ Hide note'
                 : task.description
-                ? '▼ ' + task.description.slice(0, 40) + (task.description.length > 40 ? '…' : '')
-                : '▼ Add note'}
+                ? task.description.slice(0, 50) + (task.description.length > 50 ? '…' : '')
+                : '+ Add note'}
             </Text>
           </TouchableOpacity>
         </View>
@@ -97,8 +93,8 @@ export function TaskItem({ task, onToggle, onUpdate }: Props) {
             styles.description,
             {
               color: colors.primaryText,
+              backgroundColor: colors.contentBg,
               borderColor: colors.divider,
-              backgroundColor: colors.appBackground,
               outlineStyle: 'none',
             } as any,
           ]}
@@ -116,20 +112,25 @@ export function TaskItem({ task, onToggle, onUpdate }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  card: {
+    borderRadius: radius.lg,
     paddingHorizontal: space.lg,
     paddingTop: space.md,
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    paddingBottom: space.sm,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
+    elevation: 2,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    paddingBottom: space.md,
+    paddingBottom: space.sm,
   },
   checkbox: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    width: 22,
+    height: 22,
+    borderRadius: 11,
     borderWidth: 2,
     marginTop: 1,
     marginRight: space.md,
@@ -143,25 +144,25 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     lineHeight: 14,
   },
-  titleContainer: {
+  body: {
     flex: 1,
   },
   title: {
     fontSize: fontSize.md,
-    fontWeight: '400',
+    fontWeight: '500',
     paddingVertical: 0,
-    marginBottom: space.xs,
+    marginBottom: 3,
   },
-  descToggle: {
+  noteToggle: {
     fontSize: fontSize.xs,
-    marginBottom: space.xs,
+    marginBottom: 2,
   },
   description: {
     fontSize: fontSize.sm,
     borderWidth: StyleSheet.hairlineWidth,
     borderRadius: radius.sm,
     padding: space.sm,
-    marginBottom: space.md,
+    marginBottom: space.sm,
     minHeight: 72,
     textAlignVertical: 'top',
   },

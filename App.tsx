@@ -44,13 +44,21 @@ function AppContent() {
 
   return (
     <View style={[styles.root, { backgroundColor: colors.appBackground }]}>
-      <Sidebar
-        dayKeys={dayKeys}
-        activeDayKey={activeDayKey}
-        taskCountsByDay={taskCountsByDay}
-        onSelectDay={handleSelectDay}
-      />
-      <View style={[styles.divider, { backgroundColor: colors.divider }]} />
+      <View
+        style={[
+          styles.sidebar,
+          {
+            backgroundColor: colors.sidebarBg,
+            shadowColor: '#000',
+          },
+        ]}>
+        <Sidebar
+          dayKeys={dayKeys}
+          activeDayKey={activeDayKey}
+          taskCountsByDay={taskCountsByDay}
+          onSelectDay={handleSelectDay}
+        />
+      </View>
       <TaskList
         dayKey={activeDayKey}
         tasks={tasks}
@@ -71,7 +79,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
   },
-  divider: {
-    width: StyleSheet.hairlineWidth,
+  sidebar: {
+    shadowOffset: { width: 2, height: 0 },
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    zIndex: 1,
   },
 });

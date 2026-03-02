@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, ScrollView, Text, StyleSheet } from 'react-native';
 import { useTheme } from '../hooks/useTheme';
-import { fontSize, space } from '../theme/styles';
+import { fontSize, space, radius } from '../theme/styles';
 import { DayRow } from './DayRow';
 
 interface Props {
@@ -21,12 +21,23 @@ export function Sidebar({
 
   return (
     <View style={[styles.container, { backgroundColor: colors.sidebarBg }]}>
-      <View style={[styles.header, { borderBottomColor: colors.divider }]}>
+      <View style={styles.header}>
+        <View style={[styles.logoMark, { backgroundColor: colors.accent }]}>
+          <Text style={styles.logoText}>✓</Text>
+        </View>
         <Text style={[styles.title, { color: colors.primaryText }]}>
           Daily Planner
         </Text>
       </View>
-      <ScrollView style={styles.scroll} contentContainerStyle={styles.list}>
+
+      <Text style={[styles.sectionLabel, { color: colors.secondaryText }]}>
+        RECENTS
+      </Text>
+
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.list}
+        showsVerticalScrollIndicator={false}>
         {dayKeys.map(key => (
           <DayRow
             key={key}
@@ -43,26 +54,47 @@ export function Sidebar({
 
 const styles = StyleSheet.create({
   container: {
-    width: 220,
+    width: 240,
     flexShrink: 0,
-    display: 'flex',
     flexDirection: 'column',
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space.sm,
     paddingHorizontal: space.lg,
     paddingTop: space.xl,
-    paddingBottom: space.md,
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    paddingBottom: space.lg,
+  },
+  logoMark: {
+    width: 28,
+    height: 28,
+    borderRadius: radius.sm,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logoText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: '700',
   },
   title: {
     fontSize: fontSize.md,
     fontWeight: '700',
-    letterSpacing: -0.3,
+    letterSpacing: -0.2,
+  },
+  sectionLabel: {
+    fontSize: 10,
+    fontWeight: '600',
+    letterSpacing: 0.8,
+    paddingHorizontal: space.xl,
+    paddingBottom: space.xs,
   },
   scroll: {
     flex: 1,
   },
   list: {
-    paddingVertical: space.sm,
+    paddingHorizontal: space.md,
+    paddingBottom: space.md,
   },
 });

@@ -2,8 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTheme } from '../hooks/useTheme';
 import { fontSize, space, radius } from '../theme/styles';
-import { formatSidebarDate } from '../utils/dateUtils';
-import { getTodayKey } from '../utils/dateUtils';
+import { formatSidebarDate, getTodayKey } from '../utils/dateUtils';
 
 interface Props {
   dayKey: string;
@@ -20,71 +19,89 @@ export function DayRow({ dayKey, taskCount, isSelected, onSelect }: Props) {
     <TouchableOpacity
       style={[
         styles.container,
-        isSelected && { backgroundColor: colors.todayBadge + '22' },
+        isSelected
+          ? { backgroundColor: colors.accent + '18' }
+          : { backgroundColor: 'transparent' },
       ]}
       onPress={() => onSelect(dayKey)}
       activeOpacity={0.7}>
-      <View style={styles.content}>
-        <View style={styles.labelRow}>
+      <View style={styles.left}>
+        <View
+          style={[
+            styles.dot,
+            { backgroundColor: isSelected ? colors.accent : colors.divider },
+          ]}
+        />
+        <Text
+          style={[
+            styles.dateText,
+            {
+              color: isSelected ? colors.accent : colors.primaryText,
+              fontWeight: isSelected ? '600' : '400',
+            },
+          ]}
+          numberOfLines={1}>
+          {isToday ? 'Today' : formatSidebarDate(dayKey)}
+        </Text>
+      </View>
+      {taskCount > 0 && (
+        <View
+          style={[
+            styles.badge,
+            {
+              backgroundColor: isSelected
+                ? colors.accent
+                : colors.secondaryText + '22',
+            },
+          ]}>
           <Text
             style={[
-              styles.dateText,
-              {
-                color: isSelected ? colors.todayBadge : colors.primaryText,
-                fontWeight: isSelected ? '600' : '400',
-              },
-            ]}
-            numberOfLines={1}>
-            {formatSidebarDate(dayKey)}
+              styles.badgeText,
+              { color: isSelected ? '#FFFFFF' : colors.secondaryText },
+            ]}>
+            {taskCount}
           </Text>
-          {isToday && (
-            <View style={[styles.badge, { backgroundColor: colors.todayBadge }]}>
-              <Text style={styles.badgeText}>Today</Text>
-            </View>
-          )}
         </View>
-        {taskCount > 0 && (
-          <Text style={[styles.count, { color: colors.secondaryText }]}>
-            {taskCount} task{taskCount !== 1 ? 's' : ''}
-          </Text>
-        )}
-      </View>
+      )}
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: space.md,
     paddingVertical: space.sm + 2,
-    borderRadius: radius.sm,
-    marginHorizontal: space.sm,
-    marginVertical: 1,
+    borderRadius: radius.md,
+    marginVertical: 2,
   },
-  content: {
-    flex: 1,
-  },
-  labelRow: {
+  left: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: space.sm,
+    flex: 1,
+  },
+  dot: {
+    width: 7,
+    height: 7,
+    borderRadius: 4,
   },
   dateText: {
     fontSize: fontSize.sm,
     flex: 1,
   },
   badge: {
-    borderRadius: radius.sm,
-    paddingHorizontal: space.sm,
-    paddingVertical: 2,
+    minWidth: 20,
+    height: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 6,
   },
   badgeText: {
-    color: '#FFFFFF',
     fontSize: fontSize.xs,
     fontWeight: '600',
-  },
-  count: {
-    fontSize: fontSize.xs,
-    marginTop: 2,
   },
 });

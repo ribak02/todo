@@ -2,34 +2,34 @@ export interface ColorPalette {
   appBackground: string;
   sidebarBg: string;
   contentBg: string;
+  cardBg: string;
   primaryText: string;
   secondaryText: string;
   completedText: string;
-  todayBadge: string;
-  checkboxFill: string;
+  accent: string;
   divider: string;
 }
 
 export const LightColors: ColorPalette = {
-  appBackground: '#F5F5F5',
-  sidebarBg: '#EBEBEB',
-  contentBg: '#FFFFFF',
-  primaryText: '#1A1A1A',
-  secondaryText: '#6E6E6E',
-  completedText: '#ADADAD',
-  todayBadge: '#007AFF',
-  checkboxFill: '#007AFF',
-  divider: '#E4E4E4',
+  appBackground: '#ECEDEF',
+  sidebarBg: '#FFFFFF',
+  contentBg: '#ECEDEF',
+  cardBg: '#FFFFFF',
+  primaryText: '#111111',
+  secondaryText: '#9A9A9A',
+  completedText: '#C8C8C8',
+  accent: '#34C759',
+  divider: '#EBEBEB',
 };
 
 export const DarkColors: ColorPalette = {
-  appBackground: '#1E1E1E',
-  sidebarBg: '#252525',
-  contentBg: '#2C2C2C',
-  primaryText: '#F0F0F0',
-  secondaryText: '#9A9A9A',
-  completedText: '#555555',
-  todayBadge: '#0A84FF',
-  checkboxFill: '#0A84FF',
-  divider: '#383838',
+  appBackground: '#161618',
+  sidebarBg: '#1E1E20',
+  contentBg: '#161618',
+  cardBg: '#262628',
+  primaryText: '#F2F2F2',
+  secondaryText: '#7A7A7A',
+  completedText: '#4A4A4A',
+  accent: '#30D158',
+  divider: '#2E2E30',
 };

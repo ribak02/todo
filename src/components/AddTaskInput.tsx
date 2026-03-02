@@ -28,7 +28,6 @@ export function AddTaskInput({ onAdd }: Props) {
     if (value.trim()) {
       onAdd(value.trim());
       setValue('');
-      // keep expanded for rapid entry
       setTimeout(() => inputRef.current?.focus(), 50);
     }
   };
@@ -41,12 +40,10 @@ export function AddTaskInput({ onAdd }: Props) {
   if (!expanded) {
     return (
       <TouchableOpacity
-        style={[styles.button, { borderColor: colors.divider }]}
+        style={[styles.addButton, { backgroundColor: colors.accent }]}
         onPress={expand}
-        activeOpacity={0.7}>
-        <Text style={[styles.buttonText, { color: colors.todayBadge }]}>
-          + New Task
-        </Text>
+        activeOpacity={0.85}>
+        <Text style={styles.addButtonText}>+ New Task</Text>
       </TouchableOpacity>
     );
   }
@@ -54,13 +51,19 @@ export function AddTaskInput({ onAdd }: Props) {
   return (
     <View
       style={[
-        styles.inputRow,
-        { backgroundColor: colors.contentBg, borderColor: colors.divider },
+        styles.inputCard,
+        {
+          backgroundColor: colors.cardBg,
+          shadowColor: '#000',
+        },
       ]}>
       <TextInput
         ref={inputRef}
-        style={[styles.input, { color: colors.primaryText }]}
-        placeholder="Task title…"
+        style={[
+          styles.input,
+          { color: colors.primaryText, outlineStyle: 'none' } as any,
+        ]}
+        placeholder="What needs to be done?"
         placeholderTextColor={colors.secondaryText}
         value={value}
         onChangeText={setValue}
@@ -69,53 +72,72 @@ export function AddTaskInput({ onAdd }: Props) {
         blurOnSubmit={false}
         autoFocus
       />
-      <TouchableOpacity onPress={confirm} style={styles.action}>
-        <Text style={[styles.actionText, { color: colors.todayBadge }]}>
-          Add
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={cancel} style={styles.action}>
-        <Text style={[styles.actionText, { color: colors.secondaryText }]}>
-          Cancel
-        </Text>
-      </TouchableOpacity>
+      <View style={styles.actions}>
+        <TouchableOpacity
+          onPress={confirm}
+          style={[styles.confirmBtn, { backgroundColor: colors.accent }]}
+          activeOpacity={0.85}>
+          <Text style={styles.confirmText}>Add</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={cancel} style={styles.cancelBtn}>
+          <Text style={[styles.cancelText, { color: colors.secondaryText }]}>
+            Cancel
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  button: {
-    margin: space.lg,
-    paddingVertical: space.sm,
-    paddingHorizontal: space.md,
-    borderRadius: radius.md,
-    borderWidth: 1,
-    alignSelf: 'flex-start',
-  },
-  buttonText: {
-    fontSize: fontSize.sm,
-    fontWeight: '500',
-  },
-  inputRow: {
-    flexDirection: 'row',
+  addButton: {
+    margin: space.xl,
+    marginTop: space.md,
+    paddingVertical: space.md,
+    borderRadius: radius.lg,
     alignItems: 'center',
-    margin: space.lg,
-    borderRadius: radius.md,
-    borderWidth: 1,
-    paddingHorizontal: space.md,
-    paddingVertical: space.xs,
+  },
+  addButtonText: {
+    color: '#FFFFFF',
+    fontSize: fontSize.sm,
+    fontWeight: '600',
+    letterSpacing: 0.2,
+  },
+  inputCard: {
+    margin: space.xl,
+    marginTop: space.md,
+    borderRadius: radius.lg,
+    padding: space.lg,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 3,
   },
   input: {
-    flex: 1,
     fontSize: fontSize.md,
+    paddingVertical: space.xs,
+    marginBottom: space.md,
+  },
+  actions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space.sm,
+  },
+  confirmBtn: {
+    paddingHorizontal: space.lg,
     paddingVertical: space.sm,
-    outlineStyle: 'none',
-  } as any,
-  action: {
+    borderRadius: radius.md,
+  },
+  confirmText: {
+    color: '#FFFFFF',
+    fontSize: fontSize.sm,
+    fontWeight: '600',
+  },
+  cancelBtn: {
     paddingHorizontal: space.sm,
     paddingVertical: space.sm,
   },
-  actionText: {
+  cancelText: {
     fontSize: fontSize.sm,
     fontWeight: '500',
   },

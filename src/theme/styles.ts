@@ -2,9 +2,9 @@ export const fontSize = {
   xs: 11,
   sm: 13,
   md: 15,
-  lg: 17,
-  xl: 20,
-  xxl: 24,
+  lg: 18,
+  xl: 22,
+  xxl: 28,
 };
 
 export const space = {
@@ -13,11 +13,12 @@ export const space = {
   md: 12,
   lg: 16,
   xl: 24,
-  xxl: 32,
+  xxl: 36,
 };
 
 export const radius = {
-  sm: 4,
-  md: 8,
-  lg: 12,
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 20,
 };
