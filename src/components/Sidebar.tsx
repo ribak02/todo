@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, ScrollView, Text, StyleSheet } from 'react-native';
-import { useTheme } from '../hooks/useTheme';
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useTheme, useIsDark, useToggleTheme } from '../hooks/useTheme';
 import { fontSize, space, radius } from '../theme/styles';
 import { DayRow } from './DayRow';
 
@@ -18,9 +18,12 @@ export function Sidebar({
   onSelectDay,
 }: Props) {
   const colors = useTheme();
+  const isDark = useIsDark();
+  const toggle = useToggleTheme();
 
   return (
     <View style={[styles.container, { backgroundColor: colors.sidebarBg }]}>
+      {/* Header */}
       <View style={styles.header}>
         <View style={[styles.logoMark, { backgroundColor: colors.accent }]}>
           <Text style={styles.logoText}>✓</Text>
@@ -34,6 +37,7 @@ export function Sidebar({
         RECENTS
       </Text>
 
+      {/* Day list */}
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.list}
@@ -48,6 +52,45 @@ export function Sidebar({
           />
         ))}
       </ScrollView>
+
+      {/* Theme toggle */}
+      <View style={[styles.footer, { borderTopColor: colors.divider }]}>
+        <View style={[styles.toggle, { backgroundColor: colors.appBackground }]}>
+          <TouchableOpacity
+            style={[
+              styles.toggleBtn,
+              !isDark && { backgroundColor: colors.sidebarBg },
+            ]}
+            onPress={() => isDark && toggle()}
+            activeOpacity={0.7}>
+            <Text
+              style={[
+                styles.toggleLabel,
+                { color: !isDark ? colors.primaryText : colors.secondaryText },
+                !isDark && styles.toggleLabelActive,
+              ]}>
+              Light
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.toggleBtn,
+              isDark && { backgroundColor: colors.sidebarBg },
+            ]}
+            onPress={() => !isDark && toggle()}
+            activeOpacity={0.7}>
+            <Text
+              style={[
+                styles.toggleLabel,
+                { color: isDark ? colors.primaryText : colors.secondaryText },
+                isDark && styles.toggleLabelActive,
+              ]}>
+              Dark
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 }
@@ -96,5 +139,28 @@ const styles = StyleSheet.create({
   list: {
     paddingHorizontal: space.md,
     paddingBottom: space.md,
+  },
+  footer: {
+    paddingHorizontal: space.lg,
+    paddingVertical: space.md,
+    borderTopWidth: StyleSheet.hairlineWidth,
+  },
+  toggle: {
+    flexDirection: 'row',
+    borderRadius: radius.md,
+    padding: 3,
+  },
+  toggleBtn: {
+    flex: 1,
+    paddingVertical: space.sm - 2,
+    borderRadius: radius.sm,
+    alignItems: 'center',
+  },
+  toggleLabel: {
+    fontSize: fontSize.xs,
+    fontWeight: '500',
+  },
+  toggleLabelActive: {
+    fontWeight: '600',
   },
 });
