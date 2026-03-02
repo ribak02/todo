@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { getTodayKey } from './src/utils/dateUtils';
 import { useTheme } from './src/hooks/useTheme';
@@ -12,7 +12,7 @@ function AppContent() {
   const colors = useTheme();
   const todayKey = getTodayKey();
   const [activeDayKey, setActiveDayKey] = useState(todayKey);
-  const { dayKeys, ensureDay } = useDayList();
+  const { dayKeys, taskCountsByDay, ensureDay, updateDayCount } = useDayList();
   const { tasks, addTask, toggleTask, updateTask } = useTasks(activeDayKey);
 
   // Today's tasks for the menu bar (shared cache keeps them in sync with above
@@ -20,15 +20,10 @@ function AppContent() {
   const { tasks: todayTasks, toggleTask: toggleTodayTask } = useTasks(todayKey);
   useMenuBar(todayTasks, toggleTodayTask);
 
-  // Track task counts per day for sidebar display
-  const [taskCountsByDay, setTaskCountsByDay] = useState<Record<string, number>>({});
-
+  // Keep sidebar count badge in sync with current day's task list
   useEffect(() => {
-    setTaskCountsByDay(prev => ({
-      ...prev,
-      [activeDayKey]: tasks.length,
-    }));
-  }, [tasks, activeDayKey]);
+    updateDayCount(activeDayKey, tasks.length);
+  }, [tasks, activeDayKey, updateDayCount]);
 
   const handleAddTask = useCallback(
     (title: string) => {

@@ -3,6 +3,13 @@ import { Task, DayKey } from '../types';
 
 const DAY_INDEX_KEY = 'day_index';
 
+// Notify useDayList whenever the stored day index changes
+const dayIndexListeners = new Set<(keys: DayKey[]) => void>();
+export function subscribeDayIndex(cb: (keys: DayKey[]) => void): () => void {
+  dayIndexListeners.add(cb);
+  return () => { dayIndexListeners.delete(cb); };
+}
+
 function dayKey(key: DayKey): string {
   return `tasks_${key}`;
 }
@@ -35,9 +42,8 @@ export async function loadAllDayKeys(): Promise<DayKey[]> {
 async function addDayToIndex(key: DayKey): Promise<void> {
   const existing = await loadAllDayKeys();
   if (!existing.includes(key)) {
-    await AsyncStorage.setItem(
-      DAY_INDEX_KEY,
-      JSON.stringify([...existing, key]),
-    );
+    const updated = [...existing, key];
+    await AsyncStorage.setItem(DAY_INDEX_KEY, JSON.stringify(updated));
+    dayIndexListeners.forEach(cb => cb(updated));
   }
 }

@@ -53,43 +53,16 @@ export function Sidebar({
         ))}
       </ScrollView>
 
-      {/* Theme toggle */}
+      {/* Theme toggle icon */}
       <View style={[styles.footer, { borderTopColor: colors.divider }]}>
-        <View style={[styles.toggle, { backgroundColor: colors.appBackground }]}>
-          <TouchableOpacity
-            style={[
-              styles.toggleBtn,
-              !isDark && { backgroundColor: colors.sidebarBg },
-            ]}
-            onPress={() => isDark && toggle()}
-            activeOpacity={0.7}>
-            <Text
-              style={[
-                styles.toggleLabel,
-                { color: !isDark ? colors.primaryText : colors.secondaryText },
-                !isDark && styles.toggleLabelActive,
-              ]}>
-              Light
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[
-              styles.toggleBtn,
-              isDark && { backgroundColor: colors.sidebarBg },
-            ]}
-            onPress={() => !isDark && toggle()}
-            activeOpacity={0.7}>
-            <Text
-              style={[
-                styles.toggleLabel,
-                { color: isDark ? colors.primaryText : colors.secondaryText },
-                isDark && styles.toggleLabelActive,
-              ]}>
-              Dark
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          onPress={toggle}
+          activeOpacity={0.7}
+          style={[styles.themeBtn, { backgroundColor: colors.appBackground }]}>
+          <Text style={[styles.themeIcon, { color: colors.secondaryText }]}>
+            {isDark ? '\u2600' : '\u263D'}
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -145,22 +118,15 @@ const styles = StyleSheet.create({
     paddingVertical: space.md,
     borderTopWidth: StyleSheet.hairlineWidth,
   },
-  toggle: {
-    flexDirection: 'row',
-    borderRadius: radius.md,
-    padding: 3,
-  },
-  toggleBtn: {
-    flex: 1,
-    paddingVertical: space.sm - 2,
-    borderRadius: radius.sm,
+  themeBtn: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     alignItems: 'center',
+    justifyContent: 'center',
   },
-  toggleLabel: {
-    fontSize: fontSize.xs,
-    fontWeight: '500',
-  },
-  toggleLabelActive: {
-    fontWeight: '600',
+  themeIcon: {
+    fontSize: 16,
+    lineHeight: 20,
   },
 });
