@@ -13,6 +13,10 @@
 
   [super applicationDidFinishLaunching:notification];
 
+  self.menuBarItem = [[NSStatusBar systemStatusBar]
+      statusItemWithLength:NSVariableStatusItemLength];
+  self.menuBarItem.button.title = @"0/0";
+
   if (self.window) {
     [self.window setFrame:NSMakeRect(100, 100, 1000, 680) display:YES];
     self.window.minSize = NSMakeSize(640, 440);

@@ -3,4 +3,6 @@
 
 @interface AppDelegate : RCTAppDelegate
 
+@property (nonatomic, strong) NSStatusItem *menuBarItem;
+
 @end
