@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { getTodayKey } from './src/utils/dateUtils';
 import { useTheme } from './src/hooks/useTheme';
